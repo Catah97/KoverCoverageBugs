@@ -1,0 +1,13 @@
+:multiplatform:cache
+multiplatform/cache/src/androidDebug/kotlin
+multiplatform/cache/src/debug/java
+multiplatform/cache/src/debug/kotlin
+multiplatform/cache/src/androidMain/kotlin
+multiplatform/cache/src/main/java
+multiplatform/cache/src/main/kotlin
+multiplatform/cache/src/commonMain/kotlin
+
+multiplatform/cache/build/tmp/kotlin-classes/debug
+multiplatform/cache/build/intermediates/javac/debug/compileDebugJavaWithJavac/classes
+
+multiplatform/cache/build/kover/bin-reports/testDebugUnitTest.ic

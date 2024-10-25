@@ -1,0 +1,129 @@
+
+
+
+<!DOCTYPE html>
+<html id="htmlId">
+<head>
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8"> 
+  <title>cache Coverage Report > CacheStoreFactory</title>
+  <style type="text/css">
+    @import "../../css/coverage.css";
+    @import "../../css/idea.min.css";
+  </style>
+  <script type="text/javascript" src="../../js/highlight.min.js"></script>
+  <script type="text/javascript" src="../../js/highlightjs-line-numbers.min.js"></script>
+</head>
+
+<body>
+<div class="content">
+<div class="breadCrumbs">
+Current scope: cache<span class="separator">|</span>    <a href="../../index.html">all classes</a>
+    <span class="separator">|</span>
+    <a href="../index.html">cz.quanti.cover.cache.domain</a>
+</div>
+
+<h1>Coverage Summary for Class: CacheStoreFactory (cz.quanti.cover.cache.domain)</h1>
+
+<table class="coverageStats">
+<tr>
+  <th class="name">Class</th>
+<th class="coverageStat 
+">
+  Branch, %
+</th>
+</tr>
+<tr>
+  <td class="name">CacheStoreFactory</td>
+    <td class="coverageStat"/>
+</tr>
+
+</table>
+
+<br/>
+<br/>
+
+
+<pre>
+<code class="sourceCode" id="sourceCode">&nbsp;package cz.quanti.cover.cache.domain
+&nbsp;
+&nbsp;import cz.quanti.cover.cache.model.CacheConfiguration.cacheJson
+&nbsp;import cz.quanti.cover.cache.model.CacheDatabaseRecord
+&nbsp;import cz.quanti.cover.cache.model.CachedType
+&nbsp;import cz.quanti.cover.cache.model.InternalCacheApi
+&nbsp;import kotlinx.coroutines.flow.Flow
+&nbsp;
+&nbsp;interface CacheStoreFactory {
+&nbsp;
+&nbsp;    @InternalCacheApi
+&nbsp;    fun &lt;Key : Any, NetworkEntity : Any, Output : Any&gt; createStore(
+&nbsp;        fetch: suspend (key: Key) -&gt; NetworkEntity,
+&nbsp;        reader: (Key) -&gt; Flow&lt;CacheDatabaseRecord?&gt;,
+&nbsp;        networkFlowMapping: suspend (CacheDatabaseRecord, Key) -&gt; Output,
+&nbsp;        writer: suspend (Key, NetworkEntity) -&gt; Unit,
+&nbsp;        delete: (suspend (Key) -&gt; Unit),
+&nbsp;        deleteAll: (suspend () -&gt; Unit),
+&nbsp;    ): CacheStore&lt;Key, Output&gt;
+&nbsp;}
+&nbsp;
+&nbsp;@OptIn(InternalCacheApi::class)
+&nbsp;inline fun &lt;reified Key : Any, reified NetworkEntity : Any, reified Output : Any&gt; CacheStoreFactory.createStore(
+&nbsp;    cacheSource: CacheSource,
+&nbsp;    cachedType: CachedType,
+&nbsp;    noinline fetch: suspend (key: Key) -&gt; NetworkEntity,
+&nbsp;    crossinline networkFlowMapping: suspend (NetworkEntity, Key) -&gt; Output,
+&nbsp;): CacheStore&lt;Key, Output&gt; {
+&nbsp;    return createStore(
+&nbsp;        fetch = fetch,
+&nbsp;        reader = {
+&nbsp;            println(&quot;cacheSource.read&quot;)
+&nbsp;            cacheSource.read(cachedType, it)
+&nbsp;        },
+&nbsp;        deleteAll =  // Kover 0.8.3 thinks that this block is not tested even it is.
+&nbsp;        {
+&nbsp;            println(&quot;cacheSource.deleteAll&quot;)
+&nbsp;            cacheSource.deleteAll(cachedType)
+&nbsp;        },
+&nbsp;        networkFlowMapping = { record, key -&gt;
+&nbsp;            println(&quot;networkFlowMapping&quot;)
+&nbsp;            val json = record.value.let { value -&gt;
+&nbsp;                cacheJson.decodeFromString&lt;NetworkEntity&gt;(value)
+&nbsp;            }
+&nbsp;            networkFlowMapping(json, key)
+&nbsp;        },
+&nbsp;        writer = { key, value -&gt;
+&nbsp;            println(&quot;cacheSource.write&quot;)
+&nbsp;            cacheSource.write(cachedType, key, value)
+&nbsp;        },
+&nbsp;        delete = { key -&gt;
+&nbsp;            println(&quot;cacheSource.delete&quot;)
+&nbsp;            cacheSource.delete(cachedType, key)
+&nbsp;        },
+&nbsp;    )
+&nbsp;}
+</code>
+</pre>
+</div>
+
+<script type="text/javascript">
+(function() {
+    var msie = false, msie9 = false;
+    /*@cc_on
+      msie = true;
+      @if (@_jscript_version >= 9)
+        msie9 = true;
+      @end
+    @*/
+
+    if (!msie || msie && msie9) {
+      hljs.highlightAll()
+      hljs.initLineNumbersOnLoad();
+    }
+})();
+</script>
+
+<div class="footer">
+    
+    <div style="float:right;">generated on 2024-10-25 17:25</div>
+</div>
+</body>
+</html>

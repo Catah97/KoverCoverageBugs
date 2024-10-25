@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="cz.quanti.cover.cache.domain.CacheSourceTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2024-10-25T15:25:55" hostname="MacBook-Pro-2.local" time="1.779">
+  <properties/>
+  <testcase name="should read from cache store and encode key to string by cache json" classname="cz.quanti.cover.cache.domain.CacheSourceTest" time="1.535"/>
+  <testcase name="should delete from cache store and encode key to string by cache json" classname="cz.quanti.cover.cache.domain.CacheSourceTest" time="0.147"/>
+  <testcase name="should write to cache store and encode key and value to string by cache json" classname="cz.quanti.cover.cache.domain.CacheSourceTest" time="0.096"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

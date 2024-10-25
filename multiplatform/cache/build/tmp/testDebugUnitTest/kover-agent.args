@@ -1,0 +1,4 @@
+report.file=/Users/martinberan/Documents/Prace/Quanti/KoverCoverageBugs/multiplatform/cache/build/kover/bin-reports/testDebugUnitTest.ic
+exclude=android.*
+exclude=com.android.*
+exclude=jdk.internal.*
